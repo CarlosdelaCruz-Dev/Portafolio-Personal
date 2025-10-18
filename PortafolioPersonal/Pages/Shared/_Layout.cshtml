@@ -7,44 +7,197 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/PortafolioPersonal.styles.css" asp-append-version="true" />
+    <style>
+        /* --- Paleta de Colores Oficial --- */
+        :root {
+            --dark-navy: #0a192f; /* Fondo principal */
+            --light-navy: #112240; /* Fondo para tarjetas/elementos */
+            --lightest-slate: #ccd6f6; /* Color de texto principal */
+            --slate: #8892b0; /* Color de texto secundario (párrafos) */
+            --green-neon: #64ffda; /* Acento de Tron (Cian) */
+            --magenta-aura: #e02fa9; /* Acento de Solo Leveling (Púrpura) */
+        }
+
+        /* --- Estilos Globales --- */
+        body {
+            background-color: var(--dark-navy);
+            color: var(--slate);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Tipografía limpia */
+            margin: 0;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--lightest-slate); /* Títulos más brillantes que el texto normal */
+        }
+
+        /* --- Barra de Navegación Estilo Tron --- */
+        .navbar {
+            background-color: rgba(10, 25, 47, 0.85); /* Fondo oscuro semi-transparente */
+            backdrop-filter: blur(10px); /* Efecto de desenfoque de fondo */
+        }
+
+        .navbar-brand, .nav-link {
+            color: var(--lightest-slate) !important; /* Texto del menú en color claro */
+            transition: color 0.2s ease-in-out;
+        }
+
+            .nav-link:hover {
+                color: var(--green-neon) !important; /* Enlaces brillan en cian al pasar el mouse */
+            }
+
+        /* --- Estilo de los Enlaces --- */
+        a {
+            color: var(--green-neon);
+        }
+
+            a:hover {
+                color: var(--magenta-aura);
+            }
+
+        /* Estilo para el contenedor principal del footer. */
+        .site-footer {
+            background-color: var(--dark-navy); /* Mismo color de fondo que el body. */
+            padding: 20px 0; /* Espacio vertical para que no se sienta apretado. */
+            text-align: center; /* Centra todo el texto. */
+            font-size: 0.9em; /* Texto ligeramente más pequeño. */
+            color: var(--slate); /* Color de texto secundario. */
+        }
+
+        /* Contenedor para los enlaces a redes sociales. */
+        .social-links a {
+            color: var(--slate); /* Color inicial de los iconos. */
+            margin: 0 10px; /* Espacio horizontal entre los iconos. */
+            font-size: 1.5em; /* Tamaño de los iconos. */
+            transition: color 0.3s ease; /* Animación suave para el cambio de color. */
+        }
+
+            /* Efecto hover estilo Tron/Solo Leveling para los iconos. */
+            .social-links a:hover {
+                color: var(--green-neon); /* Al pasar el mouse, el icono brilla en color cian. */
+            }
+
+
+        /* --- ESTILOS PARA EL ENLACE DE NAVEGACIÓN ACTIVO --- */
+
+        .nav-item {
+            position: relative; /* Necesario para posicionar los elementos internos (pseudo-elementos) */
+            margin: 0 5px; /* Pequeño espacio entre los enlaces */
+        }
+
+        /* Estilo para el subrayado del enlace activo */
+        .nav-link.active::after {
+            content: ''; /* El subrayado no tiene texto, es solo un elemento visual */
+            position: absolute;
+            bottom: 5px; /* Posición de la línea */
+            left: 15%; /* Dónde empieza la línea (un poco adentro) */
+            width: 70%; /* Ancho de la línea */
+            height: 2px;
+            background-color: var(--green-neon);
+            box-shadow: 0 0 10px var(--green-neon); /* Efecto de brillo (aura) */
+        }
+
+        /* Estilo para los corchetes que aparecen al pasar el mouse */
+        .nav-link::before {
+            content: '[';
+            position: absolute;
+            left: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--magenta-aura); /* Color púrpura de Solo Leveling */
+            opacity: 0; /* Oculto por defecto */
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: ']';
+            position: absolute;
+            right: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--magenta-aura);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Muestra los corchetes en el enlace ACTIVO y al pasar el mouse */
+        .nav-link.active::before,
+        .nav-link.active::after,
+        .nav-link:hover::before,
+        .nav-link:hover::after {
+            opacity: 1;
+        }
+
+        /* Nos aseguramos de que el subrayado del enlace activo no se confunda con el corchete derecho,
+           reiniciando su 'content' para que no sea un ']' */
+        .nav-link.active::after {
+            content: '';
+        }
+    </style>
 </head>
 <body>
+    <div id="particles-js" style="position: fixed; width: 100%; height: 100%; z-index: -1;"></div>
+
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">PortafolioPersonal</a>
+                <a class="navbar-brand" asp-area="" asp-page="/Index">Portafolio Personal</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-page="/Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-page="/SobreMi">Sobre Mí</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-page="/Contacto">Contacto</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-page="/CV">CV</a>
+                            </li>
+                        </ul>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
     <div class="container">
-        @if (TempData["MensajeExito"] != null)
-{
-        <div class="alert alert-success">
-            @TempData["MensajeExito"]
-        </div>
-}
         <main role="main" class="pb-3">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success" role="alert">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top site-footer">
         <div class="container">
-            &copy; 2025 - PortafolioPersonal - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            @* Contenedor para los iconos de redes sociales. 'mb-2' añade un pequeño margen inferior. *@
+            <div class="social-links mb-2">
+
+                @* --- Icono y Enlace a GitHub --- *@
+                @* target="_blank" hace que el enlace se abra en una nueva pestaña. *@
+                <a href="https://github.com/CarlosdelaCruz-Dev" target="_blank" title="GitHub">
+                    @* SVG: Es un gráfico vectorial dibujado directamente en el HTML. Moderno y eficiente. *@
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                </a>
+
+                @* --- Icono y Enlace a LinkedIn --- *@
+                <a href="https://www.linkedin.com/in/carlos-enrique-hernandez-de-la-cruz-55a970271?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3B6naW5TB7R4qMZUMxJsstBA%3D%3D" target="_blank" title="LinkedIn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                </a>
+            </div>
+
+            @* Línea de copyright. @DateTime.Now.Year obtiene el año actual automáticamente con C#. *@
+            &copy; @DateTime.Now.Year - Portafolio de Carlos Enrique Hernández de la Cruz - <a asp-area="" asp-page="/Privacy">Política de Privacidad</a>
         </div>
     </footer>
 
@@ -53,5 +206,33 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+    <script src="~/js/particles-config.js"></script>
+
+    @* --- SCRIPT PARA MARCAR EL ENLACE ACTIVO --- *@
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Obtiene la ruta de la página actual (ej. "/" o "/SobreMi")
+            const currentPagePath = window.location.pathname;
+
+            // Busca todos los enlaces de la barra de navegación
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+
+            navLinks.forEach(link => {
+                const linkPath = link.getAttribute('href');
+
+                // Lógica de comparación mejorada:
+                // 1. Maneja el caso de la página de inicio, donde la ruta es "/"
+                if (currentPagePath === '/' && linkPath === '/') {
+                    link.classList.add('active');
+                }
+                // 2. Maneja las otras páginas, asegurándose de que no sea la de inicio
+                //    y que la ruta actual comience con la ruta del enlace.
+                else if (linkPath !== '/' && currentPagePath.startsWith(linkPath)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

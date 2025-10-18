@@ -1,0 +1,422 @@
+﻿@page
+@model PortafolioPersonal.Pages.SobreMiModel
+@{
+    ViewData["Title"] = "Sobre Mí";
+}
+
+<style>
+    /* Contenedor principal para la sección. Se mantiene el padding. */
+    .about-section {
+        padding: 40px 0; /* Reducimos un poco el padding para evitar el scroll */
+        width: 100%;
+        max-width: 900px; /* Le damos un ancho máximo para que no se estire demasiado en pantallas grandes */
+        margin: auto; /* Centra el contenedor principal */
+    }
+
+    /* --- NUEVO CONTENEDOR FLEXBOX --- */
+    /* Este es el nuevo contenedor que crea el layout de dos columnas. */
+    .about-grid {
+        display: flex; /* Activa Flexbox. */
+        align-items: center; /* Centra la foto y el texto verticalmente. */
+        gap: 30px; /* Espacio entre la foto y el texto. */
+        margin-bottom: 50px; /* Espacio antes de la sección de habilidades. */
+    }
+
+    /* Contenedor para el texto, para asegurar que el texto se alinee a la izquierda. */
+    .about-description {
+        text-align: justify;
+    }
+
+    /* Estilo de la foto de perfil (sin cambios) */
+    .profile-picture {
+        width: 210px;
+        height: 210px;
+        border-radius: 80%;
+        object-fit: cover;
+        border: 3px solid var(--green-neon); /* Usamos el color de acento de Tron */
+    }
+
+    /* Sección de habilidades (ahora centrada explícitamente) */
+    .skills-section {
+        padding-top: 20px;
+        text-align: center; /* Aseguramos que esta sección siga centrada */
+        border-top: 1px solid var(--slate); /* Línea divisoria sutil */
+    }
+
+    /* Insignias de habilidades (actualizadas para el tema Tron/Solo Leveling) */
+     /* Insignias de habilidades (Estilo Original) */
+    .skill-badge {
+        display: inline-flex; /* CAMBIO: Usamos inline-flex para alinear el contenido interno. */
+        justify-content: center; /* NUEVO: Centra el texto en el eje horizontal. */
+        align-items: center;
+
+        background-color: #007bff; /* Fondo azul sólido original */
+        color: white; /* Texto blanco */
+        padding: 8px 15px;
+        margin: 5px;
+        border-radius: 25px;
+        font-weight: 500;
+        border: none; /* Nos aseguramos de que no tenga borde */
+    }
+
+    /* --- INICIO: ESTILOS PARA EL CARRUSEL DE HABILIDADES --- */
+
+    /* La "ventana" del carrusel. */
+    .skills-carousel-container {
+        width: 100%;
+        overflow: hidden; /* ¡Muy importante! Oculta las habilidades que están fuera del contenedor. */
+        /* Este es un truco de diseño para que los bordes se vean difuminados y no aparezcan de golpe. */
+        -webkit-mask-image: linear-gradient(to right, transparent, white 20%, white 80%, transparent);
+        mask-image: linear-gradient(to right, transparent, white 20%, white 80%, transparent);
+    }
+
+    /* La "pista" que contiene todas las habilidades (ambas copias). */
+    .skills-track {
+        display: flex; /* Pone todas las habilidades en una sola fila. */
+        gap: 10px; /* Espacio entre cada insignia. */
+        width: fit-content; /* Se ajusta al ancho de todas las insignias juntas. */
+        /* Aquí se aplica la animación que hemos definido abajo. */
+        /* Durará 30 segundos, será a velocidad constante (linear) y se repetirá infinitamente. */
+        animation: scrollAnimation 30s linear infinite;
+    }
+
+    /* La animación que mueve la pista de derecha a izquierda. */
+    @@keyframes scrollAnimation {
+        from {
+            /* Empieza en la posición original. */
+            transform: translateX(0);
+        }
+
+        to {
+            /* Termina cuando la primera mitad de la pista se ha movido completamente fuera de la vista. */
+            /* Como duplicamos el contenido, la segunda mitad queda exactamente donde empezó la primera, creando un bucle perfecto. */
+            transform: translateX(-50%);
+        }
+    }
+
+    /* --- MEDIA QUERY PARA MÓVILES --- */
+    /* Reglas para que el diseño se vea bien en pantallas pequeñas */
+    @@media (max-width: 768px) {
+        .about-grid {
+            flex-direction: column; /* Apila la foto y el texto verticalmente. */
+            text-align: center; /* Centra todo en móviles. */
+        }
+
+        .about-description {
+            text-align: center; /* Centra la descripción en móviles. */
+        }
+    }
+
+    /* --- INICIO: ESTILOS PARA EL CARRUSEL DE CERTIFICACIONES --- */
+
+    /* Contenedor principal de la sección */
+    .certifications-section {
+        padding-top: 40px;
+        text-align: center;
+        border-top: 1px solid var(--slate);
+    }
+
+    /* Contenedor que envuelve carrusel y botones. Necesario para posicionar las flechas. */
+    .carousel-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding: 0 40px; /* Espacio para que las flechas no se peguen a los bordes */
+    }
+
+    /* La "ventana" del carrusel. Oculta las tarjetas que se salen. */
+    .certifications-carousel-container {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    /* La "pista" que se mueve. Ya no necesita "wrap" ni "justify-content". */
+    .certifications-grid {
+        display: flex;
+        flex-wrap: nowrap; /* ¡Clave! Mantiene las tarjetas en una sola línea. */
+        gap: 25px;
+        padding-top: 20px;
+        transition: transform 0.5s ease-in-out; /* Animación suave para el deslizamiento */
+    }
+
+    /* Estilo de las tarjetas (con un pequeño ajuste para que no se encojan) */
+    .cert-card {
+        background-color: var(--light-navy);
+        border: 1px solid var(--green-neon);
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(100, 255, 218, 0.1);
+        width: 280px;
+        flex-shrink: 0; /* ¡Clave! Evita que las tarjetas se encojan para caber. */
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        /* El resto de estilos de .cert-card:hover, .cert-logo-container, etc., se mantienen igual que antes */
+        .cert-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 25px rgba(224, 47, 169, 0.3);
+            border-color: var(--magenta-aura);
+        }
+
+    .cert-logo-container {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background-color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        margin-bottom: 15px;
+    }
+
+    .cert-logo {
+        width: 100%;
+        height: auto;
+    }
+
+    .cert-title {
+        color: var(--lightest-slate);
+        font-size: 1.1em;
+        flex-grow: 1;
+        margin-bottom: 10px;
+    }
+
+    .cert-issuer {
+        color: var(--slate);
+        font-size: 0.9em;
+        margin-bottom: 15px;
+    }
+
+    .cert-button {
+        color: var(--green-neon);
+        background-color: transparent;
+        border: 1px solid var(--green-neon);
+        padding: 8px 15px;
+        width: 100%;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+    }
+
+        .cert-button:hover {
+            background-color: rgba(100, 255, 218, 0.1);
+        }
+
+
+    /* Estilo para los botones de navegación (flechas) */
+    .carousel-button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(10, 25, 47, 0.5);
+        border: 1px solid var(--slate);
+        color: var(--green-neon);
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+        z-index: 10;
+    }
+
+        .carousel-button:hover {
+            background-color: var(--light-navy);
+            border-color: var(--green-neon);
+        }
+
+        .carousel-button.prev {
+            left: 0;
+        }
+
+        .carousel-button.next {
+            right: 0;
+        }
+</style>
+
+<div class="about-section">
+    <div class="about-grid">
+        <img src="https://avatars.githubusercontent.com/u/204098469?u=48a2691f3124a30e3d9be965f936832757e794e3&v=4" alt="Foto de Carlos Enrique Hernández" class="profile-picture" />
+
+        <div class="about-description">
+            <h1>Hola, soy Carlos de la Cruz</h1>
+            <p class="lead" style="color: var(--slate);">
+                Soy un desarrollador de software apasionado por la creación de aplicaciones eficientes y robustas, 
+                con una especialización principal en el ecosistema .NET, C# ,Django y Python.
+                Mi enfoque en el desarrollo se fortalece con un profundo interés práctico en 
+                la administración de bases de datos (SQL) y el soporte a la infraestructura de TI. Disfruto no solo de programar una solución, 
+                sino de entender cómo interactúa con la base de datos y cómo se desempeña en la red.
+                Esta perspectiva integral me permite construir software más resiliente y fácil de mantener. Soy un solucionador de problemas por 
+                naturaleza, siempre listo para colaborar y enfrentar desafíos técnicos en cualquier capa del sistema.
+            </p>
+        </div>
+    </div>
+
+    <div class="skills-section">
+        <h3>Mis Habilidades</h3>
+
+        <div class="skills-carousel-container">
+            <div class="skills-track">
+                <span class="skill-badge">C#</span>
+                <span class="skill-badge">.NET</span>
+                <span class="skill-badge">ASP.NET Core</span>
+                <span class="skill-badge">HTML5</span>
+                <span class="skill-badge">CSS3</span>
+                <span class="skill-badge">JavaScript</span>
+                <span class="skill-badge">Python</span>
+                <span class="skill-badge">Java</span>
+                <span class="skill-badge">Django</span>
+                <span class="skill-badge">Bootstrap</span>
+                <span class="skill-badge">MySQL</span>
+                <span class="skill-badge">SQLite</span>
+                <span class="skill-badge">Git</span>
+                <span class="skill-badge">Excel</span>
+                <span class="skill-badge">Power Bi</span>
+
+                <span class="skill-badge">C#</span>
+                <span class="skill-badge">.NET</span>
+                <span class="skill-badge">ASP.NET Core</span>
+                <span class="skill-badge">HTML5</span>
+                <span class="skill-badge">CSS3</span>
+                <span class="skill-badge">JavaScript</span>
+                <span class="skill-badge">Python</span>
+                <span class="skill-badge">Java</span>
+                <span class="skill-badge">Django</span>
+                <span class="skill-badge">Bootstrap</span>
+                <span class="skill-badge">MySQL</span>
+                <span class="skill-badge">SQLite</span>
+                <span class="skill-badge">Git</span>
+                <span class="skill-badge">Excel</span>
+                <span class="skill-badge">Microsoft Office</span>
+                <span class="skill-badge">Power Bi</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="certifications-section">
+        <h3>Certificaciones y Logros</h3>
+
+        <div class="carousel-wrapper">
+            <button id="prevBtn" class="carousel-button prev">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+
+            <div class="certifications-carousel-container">
+                <div id="certificationsTrack" class="certifications-grid">
+                    <div class="cert-card">
+                        <div class="cert-logo-container"><img src="https://th.bing.com/th/id/OIP.orYq9bnUpclIng3m1nfeKwHaHa?w=173&h=180&c=7&r=0&o=7&cb=12&pid=1.7&rm=3" alt="Logo de Platzi" class="cert-logo" /></div>
+                        <h4 class="cert-title">Bases de datos con SQL</h4>
+                        <p class="cert-issuer">Emitida por: Platzi</p>
+                        <a href="https://drive.google.com/file/d/1LIhYTUO5S_fVQJuCXijaob2eyUVshtLl/view?usp=drive_link" target="_blank" class="cert-button">Verificar Certificado</a>
+                    </div>
+                    <div class="cert-card">
+                        <div class="cert-logo-container"><img src="https://media.licdn.com/dms/image/C4E0BAQExT0qJW9jJdw/company-logo_200_200/0/1656438194977?e=2147483647&v=beta&t=Z_jMI8ZlnI70-VfTWRKPTlpMwplfWwXvKR-yKfH2rA4" alt="Logo de Alura" class="cert-logo" /></div>
+                        <h4 class="cert-title">Inmersión IA</h4>
+                        <p class="cert-issuer">Emitida por: Alura</p>
+                        <a href="https://drive.google.com/file/d/1wdxxcgpYSimebpQfG6WfIcUFlLF3gAn4/view?usp=sharing" target="_blank" class="cert-button">Verificar Certificado</a>
+                    </div>
+                    <div class="cert-card">
+                        <div class="cert-logo-container"><img src="https://assets.santanderopenacademy.com/images/logos/logo-soa.svg" alt="Logo de Santander" class="cert-logo" /></div>
+                        <h4 class="cert-title">Excel</h4>
+                        <p class="cert-issuer">Emitida por: Santander Open Academy</p>
+                        <a href="https://drive.google.com/file/d/17btlFryDFlwBCXxKPzawdgBQ8Qlm0bh3/view?usp=sharing" target="_blank" class="cert-button">Verificar Certificado</a>
+                    </div>
+                    <div class="cert-card">
+                        <div class="cert-logo-container"><img src="https://assets.santanderopenacademy.com/images/logos/logo-soa.svg" alt="Logo de Santander" class="cert-logo" /></div>
+                        <h4 class="cert-title">Power BI</h4>
+                        <p class="cert-issuer">Emitida por: Santander Open Academy</p>
+                        <a href="https://drive.google.com/file/d/1UXAbLpcMiAxfLwbfKDzWjmZWm-LNyIyj/view?usp=sharing" target="_blank" class="cert-button">Verificar Certificado</a>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <button id="nextBtn" class="carousel-button next">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+@* 3. LÓGICA JAVASCRIPT PARA CONTROLAR EL CARRUSEL *@
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const container = document.querySelector('.certifications-carousel-container');
+            const track = document.getElementById('certificationsTrack');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            if (!track || !container || !prevBtn || !nextBtn) return; // Asegurarse de que todos los elementos existan
+
+            const cards = Array.from(track.querySelectorAll('.cert-card')); // Convertir a Array para mayor facilidad
+            if (cards.length === 0) return;
+
+            // Variables para el estado del carrusel
+            let currentIndex = 0; // Índice de la primera tarjeta visible en la "página" actual
+
+            function updateCarouselState() {
+                const containerWidth = container.offsetWidth;
+                const cardWidth = cards[0].offsetWidth; // Ancho fijo de una tarjeta
+                const cardGap = parseInt(window.getComputedStyle(track).gap); // Espacio entre tarjetas
+
+                // Calculamos cuántas tarjetas completas caben en la vista
+                const cardsInView = Math.floor(containerWidth / (cardWidth + cardGap));
+
+                // Calculamos el ancho total de todas las tarjetas y sus gaps
+                const totalTrackWidth = cards.length * cardWidth + (cards.length - 1) * cardGap;
+
+                // Determinar el desplazamiento máximo posible para que la última tarjeta esté visible a la derecha
+                let maxScrollOffset = 0;
+                if (totalTrackWidth > containerWidth) { // Solo si el contenido es más grande que el contenedor
+                    maxScrollOffset = totalTrackWidth - containerWidth;
+                }
+
+                // Calcular el número máximo de "pasos" que podemos dar
+                // Ajustamos maxIndex para que no sobrepase la última posición posible
+                const maxIndex = Math.max(0, cards.length - cardsInView); // Asegura que no sea negativo
+
+                // Limitar currentIndex para que no se vaya de rango
+                currentIndex = Math.max(0, Math.min(currentIndex, maxIndex));
+
+                // Calcular el valor de translateX
+                // Si estamos en la última "página" y no se llenan todas las slots, alineamos al final.
+                let translateXValue = currentIndex * (cardWidth + cardGap);
+                if (currentIndex === maxIndex && maxScrollOffset > 0) {
+                     // Asegurarse de que el último elemento visible esté a la derecha del contenedor.
+                     // Este es el ajuste clave para eliminar el espacio.
+                     translateXValue = maxScrollOffset;
+                }
+
+                track.style.transform = `translateX(-${translateXValue}px)`;
+
+                // Deshabilitar botones
+                prevBtn.disabled = currentIndex === 0;
+                // El botón next se deshabilita si currentIndex es el máximo.
+                // O si todas las tarjetas ya caben en una sola vista.
+                nextBtn.disabled = currentIndex >= maxIndex || cards.length <= cardsInView;
+            }
+
+            nextBtn.addEventListener('click', () => {
+                currentIndex++;
+                updateCarouselState();
+            });
+
+            prevBtn.addEventListener('click', () => {
+                currentIndex--;
+                updateCarouselState();
+            });
+
+            // Inicializar el carrusel y reaccionar a cambios de tamaño
+            updateCarouselState();
+            window.addEventListener('resize', updateCarouselState);
+        });
+    </script>
+}

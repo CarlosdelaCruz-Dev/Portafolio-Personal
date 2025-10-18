@@ -4,7 +4,83 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<style>
+    .hero-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 70vh;
+        padding: 0 20px;
+    }
+
+    /* --- INICIO: CÓDIGO DE ANIMACIÓN --- */
+    /* Define la animación: empieza transparente y 20px más abajo, termina opaco en su posición original */
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Aplicamos la animación a cada elemento con un retraso diferente */
+    .hero-greeting {
+        color: var(--green-neon);
+        font-family: 'Consolas', 'Menlo', monospace;
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        animation: fadeInUp 0.5s ease-out 0.2s forwards; /* Duración, timing, retraso */
+        opacity: 0; /* Empieza invisible */
+    }
+
+    .hero-name {
+        font-size: 4rem;
+        font-weight: bold;
+        color: var(--lightest-slate);
+        margin-bottom: 10px;
+        animation: fadeInUp 0.5s ease-out 0.4s forwards;
+        opacity: 0;
+    }
+
+    .hero-subtitle {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--slate);
+        margin-bottom: 30px;
+        animation: fadeInUp 0.5s ease-out 0.6s forwards;
+        opacity: 0;
+    }
+
+    .hero-button {
+        color: var(--green-neon);
+        background-color: transparent;
+        border: 1px solid var(--green-neon);
+        padding: 15px 30px;
+        font-size: 1rem;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+        animation: fadeInUp 0.5s ease-out 0.8s forwards;
+        opacity: 0;
+    }
+
+        .hero-button:hover {
+            background-color: rgba(100, 255, 218, 0.1);
+        }
+</style>
+
+<div class="hero-section">
+    <p class="hero-greeting">Hola, mi nombre es</p>
+    <h1 class="hero-name">Carlos Enrique Hernández</h1>
+    <h2 class="hero-subtitle">Construyo aplicaciones para la web.</h2>
+
+    @* Este es el botón que invita al usuario a ver tu trabajo. *@
+    @* asp-page="/Proyectos" crea el enlace a tu página de Proyectos. *@
+    <a asp-page="/Proyectos" class="hero-button">¡Conoce mi trabajo!</a>
 </div>

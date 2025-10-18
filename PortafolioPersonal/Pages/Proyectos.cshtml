@@ -1,85 +1,138 @@
-﻿@page // 1. Le dice a ASP.NET Core que esto es una página web.
-@model PortafolioPersonal.Pages.ProyectosModel // 2. Conecta esta vista con el código de C# que le da la lógica.
+﻿@page
+@model PortafolioPersonal.Pages.ProyectosModel
 @{
-    ViewData["Title"] = "Mis Proyectos"; // 3. Le da un título a la página que se mostrará en la pestaña del navegador.
+    @* Esta línea establece el título que aparecerá en la pestaña del navegador. *@
+    ViewData["Title"] = "Mis Proyectos";
 }
 
-}
-
-<h1>Mis Proyectos</h1>  // 4. Es el título principal de la página
-
-<div class="proyectos-container">
-    @foreach (var proyecto in Model.Proyectos)
-    {
-    <div class="proyecto-card">
-        <h3>@proyecto.Nombre</h3> <p>@proyecto.Descripcion</p> <a href="@proyecto.UrlRepositorio" target="_blank">Ver código</a> <span class="tecnologia">Tecnología: @proyecto.Tecnologia</span>
-    </div>
-    }
-</div>
 
 <style>
-    .proyectos-container {
-     /* Utiliza un sistema de cuadrícula para crear un diseño flexible. */
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 20px;
-        padding: 20px;
+    /* El contenedor principal que organizará todas las tarjetas de proyecto. */
+    .project-gallery {
+        display: flex; /* Activa Flexbox, un sistema moderno para alinear elementos. */
+        flex-wrap: wrap; /* Permite que las tarjetas pasen a la siguiente línea si no caben. */
+        gap: 25px; /* Define el espacio de separación entre cada tarjeta. */
+        justify-content: center; /* Centra las tarjetas horizontalmente en la página. */
+        padding: 40px 0; /* Añade espacio vertical arriba y abajo de la galería. */
     }
 
-    /* -- Estilo para cada tarjeta de Proyecto -- */
-    .proyecto-card {
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        padding: 20px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s;
+    /* El estilo para cada una de las tarjetas de proyecto individuales. */
+    .project-card {
+        /* Color de fondo para tarjetas. Es un azul ligeramente más claro que el fondo principal. */
+        /* La función var() usa los colores que definimos en _Layout.cshtml. */
+        background-color: var(--light-navy);
+        /* El borde estilo neón de Tron. */
+        border: 1px solid var(--green-neon);
+        border-radius: 8px; /* Bordes ligeramente redondeados. */
+        /* Un sutil brillo exterior para simular el neón. */
+        box-shadow: 0 0 15px rgba(100, 255, 218, 0.1);
+        width: 320px; /* Ancho fijo para que todas las tarjetas sean iguales. */
+        padding: 25px; /* Espacio interior para que el contenido no toque los bordes. */
+        /* Usamos Flexbox de nuevo, pero esta vez para organizar el contenido DENTRO de la tarjeta. */
+        display: flex;
+        flex-direction: column; /* Apila el contenido (título, descripción, botón) verticalmente. */
+        /* Prepara la tarjeta para animaciones suaves. */
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-        /* -- Efecto al pasar el mouse sobre la tarjeta -- */
-        .proyecto-card:hover {
-            /* Mueve la tarjeta ligeramente hacia arriba para dar un efecto interactivo. */
-            transform: translateY(-5px);
+        /* --- El efecto de "Solo Leveling" al pasar el mouse --- */
+        .project-card:hover {
+            /* Efecto de levitación: la tarjeta se mueve 10px hacia arriba. */
+            transform: translateY(-10px);
+            /* El "aura" púrpura. Aumentamos la intensidad y cambiamos el color del brillo. */
+            box-shadow: 0 0 25px rgba(224, 47, 169, 0.3);
+            /* También cambiamos el color del borde al color del aura. */
+            border-color: var(--magenta-aura);
         }
 
-        /* -- Estilo del título del proyecto (h3) -- */
-        .proyecto-card h3 {
-            color: #333;
-            font-size: 1.5rem;
+        /* Estilo para el título (<h3>) de cada proyecto. */
+        .project-card h3 {
+            color: var(--lightest-slate); /* Color de texto principal para títulos. */
+            margin-top: 0;
+            margin-bottom: 15px;
         }
 
-        /* -- Estilo de la descripción del proyecto (p) -- */
-        .proyecto-card p {
-            color: #666;
-            font-size: 1rem;
+        /* Estilo para el párrafo de descripción. */
+        .project-card .description {
+            flex-grow: 1; /* Truco de Flexbox: hace que la descripción ocupe todo el espacio vertical disponible. */
+            color: var(--slate); /* Color de texto secundario, un poco más opaco. */
+            margin-bottom: 20px;
+            font-size: 0.95em; /* Un tamaño de letra ligeramente más pequeño. */
         }
 
-        /* -- Estilo del enlace "Ver código" (a) -- */
-        .proyecto-card a {
-            /* Hace que el enlace se comporte como un bloque para poder darle tamaño. */
+        /* Contenedor para las tecnologías. */
+        .project-card .tech {
+            margin-bottom: 20px;
+        }
+
+        /* Insignias para mostrar las tecnologías (C#, .NET, etc.). */
+        .project-card .tech-badge {
             display: inline-block;
-            /* Añade espacio arriba del enlace. */
-            margin-top: 10px;
-            /* Añade espacio interno para que se vea como un botón. */
-            padding: 8px 12px;
-            /* Color de fondo azul. */
-            background-color: #007bff;
-            /* Color de texto blanco. */
-            color: white;
-            /* Elimina la línea de subrayado del enlace. */
-            text-decoration: none;
-            /* Redondea las esquinas del botón. */
-            border-radius: 4px;
+            background-color: rgba(100, 255, 218, 0.1); /* Fondo translúcido del color neón. */
+            color: var(--green-neon); /* Texto del color neón. */
+            padding: 5px 10px;
+            margin-right: 5px;
+            border-radius: 15px; /* Bordes muy redondeados para que parezca una píldora. */
+            font-size: 0.8em;
+            font-weight: bold;
         }
 
-    /* -- Estilo para el texto de la tecnología -- */
-    .tecnologia {
-        /* Ocupa todo el ancho de la línea para aparecer debajo de la descripción. */
-        display: block;
-        /* Pone el texto en cursiva. */
-        font-style: italic;
-        /* Añade espacio arriba del texto. */
-        margin-top: 10px;
-        /* Define el color del texto. */
-        color: #888;
+        /* El botón/enlace para ver el repositorio. */
+        .project-card a.repo-link {
+            color: var(--green-neon);
+            background-color: transparent; /* Fondo transparente (estilo "ghost button"). */
+            border: 1px solid var(--green-neon); /* Borde del mismo color que el texto. */
+            text-align: center;
+            padding: 10px 0;
+            border-radius: 4px;
+            text-decoration: none; /* Quita el subrayado del enlace. */
+            font-weight: bold;
+            transition: background-color 0.3s ease, color 0.3s ease; /* Animación suave. */
+        }
+
+            /* Efecto al pasar el mouse sobre el botón del repositorio. */
+            .project-card a.repo-link:hover {
+                /* Se rellena con un fondo translúcido para dar feedback al usuario. */
+                background-color: rgba(100, 255, 218, 0.1);
+                color: var(--green-neon);
+            }
+
+        /* --- INICIO DE REGLAS PARA MÓVILES (MEDIA QUERY) --- */
+        @@media (max-width: 768px) {
+            .project-card {
+                width: 100%; /* En pantallas pequeñas, las tarjetas ocupan todo el ancho disponible. */
+            }
+
+            .display-4 {
+                font-size: 2.5rem; /* Hacemos el título "Mis Proyectos" un poco más pequeño */
+            }
+
     }
+
+
 </style>
+
+
+<div class="text-center" style="padding-top: 20px;">
+    <h1 class="display-4">Mis Proyectos</h1>
+    <p class="lead" style="color: var(--slate);">Una selección de mis trabajos más recientes.</p>
+</div>
+
+<div class="project-gallery">
+
+    @* --- El Bucle Mágico (C# con Razor) --- *@
+    @* Esta línea de código C# recorre la lista de proyectos que viene del backend. *@
+    @* Para cada 'proyecto' en la lista 'Model.Proyectos', repetirá el código HTML de adentro. *@
+    @foreach (var proyecto in Model.Proyectos)
+    {
+        @* 3. El código HTML para una sola tarjeta de proyecto. Esto se repetirá para cada proyecto. *@
+        <div class="project-card">
+            <h3>@proyecto.Nombre</h3>
+            <p class="description">@proyecto.Descripcion</p>
+            <div class="tech">
+                <span class="tech-badge">@proyecto.Tecnologia</span>
+            </div>
+            <a href="@proyecto.UrlRepositorio" target="_blank" class="repo-link">Ver Repositorio</a>
+        </div>
+    }
+</div>

@@ -1,23 +1,74 @@
-@page // 1. Indica que es una página web.
-@model PortafolioPersonal.Pages.ContactoModel // 2. Conecta la vista con la lógica de C#.
+@page
+@model PortafolioPersonal.Pages.ContactoModel
 @{
-    ViewData["Title"] = "Contacto"; // 3. Establece el título de la página.
+    ViewData["Title"] = "Contacto";
 }
 
-<h1>Formulario de contacto</h1>
+<style>
+    /* Contenedor principal que solo añade espacio, sin forzar la altura */
+    .contact-wrapper {
+        padding: 30px 0; /* Espacio vertical, igual que en la página de Proyectos */
+    }
 
-<form method="post">
-    <div>
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required />
+    /* Contenedor del formulario */
+    .contact-form-box {
+        max-width: 600px;
+        margin: auto; /* Centra el formulario horizontalmente */
+        padding: 30px;
+        background-color: var(--light-navy);
+        border-radius: 8px;
+        border: 1px solid var(--slate);
+    }
+
+    /* Estilos de los campos y el botón (sin cambios) */
+    .form-control, .form-control:focus {
+        background-color: var(--light-navy);
+        color: var(--lightest-slate);
+        border: 1px solid var(--slate);
+        box-shadow: none;
+    }
+
+        .form-control:focus {
+            border-color: var(--green-neon);
+            box-shadow: 0 0 10px rgba(100, 255, 218, 0.2);
+        }
+
+    .submit-button {
+        color: var(--green-neon);
+        background-color: transparent;
+        border: 1px solid var(--green-neon);
+        padding: 10px 25px;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+        width: auto;
+    }
+
+        .submit-button:hover {
+            background-color: rgba(100, 255, 218, 0.1);
+        }
+</style>
+
+<div class="contact-wrapper">
+    <div class="contact-form-box">
+        <div class="text-center mb-4">
+            <h1>Formulario de contacto</h1>
+        </div>
+        <form method="post">
+            <div class="mb-3">
+                <label asp-for="Nombre" class="form-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">Correo Electrónico</label>
+                <input asp-for="Email" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Mensaje" class="form-label"></label>
+                <textarea asp-for="Mensaje" class="form-control" rows="5"></textarea>
+            </div>
+            <div class="mb-3 text-center">
+                <button type-="submit" class="submit-button">Enviar Mensaje</button>
+            </div>
+        </form>
     </div>
-    <div>
-        <label for="email">Correo Electrónico:</label>
-        <input type="email" id="email" name="email" required />
-    </div>
-    <div>
-        <label for="mensaje">Mensaje:</label>
-        <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
-    </div>
-    <button type="submit">Enviar</button>
-</form>
+</div>

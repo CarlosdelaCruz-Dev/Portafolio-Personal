@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using PortafolioPersonal.Models;
 using PortafolioPersonal.Data;
+using PortafolioPersonal.Models;
+using PortafolioPersonal.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,8 @@ builder.Services.AddSession(options =>
 // que está guardado en el archivo 'appsettings.json'.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddTransient<EmailService>();
 
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())

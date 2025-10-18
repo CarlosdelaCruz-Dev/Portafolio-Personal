@@ -1,0 +1,245 @@
+﻿@page
+@model PortafolioPersonal.Pages.CVModel
+@{
+    ViewData["Title"] = "CV";
+}
+
+@* ------------------------------------------------------------------ *@
+@* SECCIÓN DE ESTILOS (CSS) PARA LA PÁGINA DE CV                      *@
+@* ------------------------------------------------------------------ *@
+<style>
+    /* Contenedor principal de la línea de tiempo */
+    .timeline {
+        position: relative;
+        max-width: 900px; /* Ancho máximo para la línea de tiempo */
+        margin: 40px auto; /* Centra la línea de tiempo en la página */
+    }
+
+        /* La línea vertical central del timeline */
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            background-color: var(--light-navy); /* Un color sutil para la línea */
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1.5px; /* Centra la línea perfectamente */
+        }
+
+    /* Contenedor para cada evento (trabajo, estudio) en la línea de tiempo */
+    .timeline-item {
+        padding: 10px 40px;
+        position: relative;
+        width: 50%;
+    }
+
+        /* El círculo en la línea de tiempo para cada evento */
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            background-color: var(--dark-navy);
+            border: 3px solid var(--green-neon); /* Círculo con borde neón */
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1; /* Se asegura de que el círculo esté por encima de la línea */
+        }
+
+    /* Posiciona los contenedores a la izquierda */
+    .left {
+        left: 0;
+    }
+
+    /* Posiciona los contenedores a la derecha */
+    .right {
+        left: 50%;
+    }
+
+        /* Ajusta la posición de los círculos para los elementos de la derecha */
+        .right::after {
+            left: -10px;
+        }
+
+    /* El contenido (la "tarjeta") de cada evento */
+    .timeline-content {
+        padding: 20px;
+        background-color: var(--light-navy);
+        position: relative;
+        border-radius: 8px;
+        border: 1px solid var(--light-navy);
+        transition: border-color 0.3s ease;
+    }
+
+        .timeline-content:hover {
+            border-color: var(--magenta-aura); /* Efecto de Solo Leveling al pasar el mouse */
+        }
+
+    /* Estilo para las fechas */
+    .timeline-date {
+        color: var(--green-neon);
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    /* Estilo para el título del rol/estudio */
+    .timeline-content h3 {
+        margin-top: 0;
+        font-size: 1.2rem;
+    }
+
+    /* Estilo para la empresa/institución */
+    .timeline-issuer {
+        color: var(--slate);
+        font-style: italic;
+        margin-bottom: 10px;
+    }
+
+    /* --- MEDIA QUERY PARA MÓVILES --- */
+    /* En pantallas pequeñas, el timeline se convierte en una sola columna */
+    @@media (max-width: 768px) {
+        .timeline::after {
+            left: 20px; /* Mueve la línea al borde izquierdo */
+        }
+
+        .timeline-item {
+            width: 100%;
+            padding-left: 50px; /* Deja espacio para la línea y el círculo */
+            padding-right: 15px;
+        }
+
+        .left, .right {
+            left: 0%; /* Todos los elementos se alinean a la izquierda */
+        }
+
+            .left::after, .right::after {
+                left: 10px; /* Mueve todos los círculos a la nueva posición de la línea */
+            }
+    }
+
+    /* --- ESTILOS PARA LOS BOTONES DE DESCARGA --- */
+    .download-buttons-container {
+        display: flex; /* Usa Flexbox para alinear los botones */
+        justify-content: center; /* Centra los botones horizontalmente */
+        gap: 20px; /* Añade un espacio de 20px entre los botones */
+        flex-wrap: wrap; /* Permite que los botones se apilen en pantallas muy pequeñas */
+    }
+</style>
+
+@* ------------------------------------------------------------------ *@
+@* ESTRUCTURA (HTML) DE LA PÁGINA DE CV                               *@
+@* ------------------------------------------------------------------ *@
+<div class="download-buttons-container">
+    <a href="~/CV-CarlosDelaCruz-ES.pdf" class="hero-button" download>Descargar CV (Español)</a>
+
+    <a href="~/CV-Carlos DelaCruz-EN.pdf" class="hero-button" download>Descargar CV (Inglés)</a>
+</div>
+
+<div class="timeline">
+
+    <div class="text-center mb-4">
+        <h2>Experiencia Profesional</h2>
+    </div>
+
+    <div class="timeline-item left">
+        <div class="timeline-content">
+            <p class="timeline-date">Agosto 2025 - Presente</p>
+            <h3>Desarrollador Full-Stack (Proyecto de Portafolio Personal)</h3>
+            <p class="timeline-issuer">Proyecto Independiente</p>
+            <ul>
+                <li><strong>Diseño</strong> y <strong>desarrollo</strong> de aplicación web completa desde cero utilizando **C# y ASP.NET Core Razor Pages**.</li>
+                <li><strong>Implementación</strong> de base de datos **SQLite** gestionada con Entity Framework Core para el sistema de proyectos.</li>
+                <li><strong>Creación</strong> de concepto de diseño UI/UX personalizado ("Tron/Solo Leveling") e <strong>implementación</strong> con **CSS moderno**, animaciones y diseño responsivo.</li>
+                <li><strong>Integración</strong> de librería externa (MailKit) para construir una funcionalidad de **formulario de contacto 100% funcional**.</li>
+                <li><strong>Gestión</strong> de el ciclo de vida del proyecto utilizando la plataforma <strong>Jira</strong>, aplicando una metodología ágil inspirada en Kanban.</li>
+                <li><strong>Aplicación</strong> de <strong> Git </strong> para el control de versiones del proyecto, gestionando el repositorio de código en <strong>GitHub</strong>.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="timeline-item right">
+        <div class="timeline-content">
+            <p class="timeline-date">Enero 2025 - Mayo 2025</p>
+            <h3>Desarrollador Web</h3>
+            <p class="timeline-issuer">Tuxtlan Coffee & Pets</p>
+            <ul>
+                <li>
+                    <strong>Desarrollo backend con Django</strong> siguiendo el patrón Modelo-Vista-Template para la estructura
+                    del software.
+                </li>
+                <li>
+                    <strong>Diseño e implementación de base de datos SQLite</strong> para administración eficiente de inventarios
+                    y ventas.
+                </li>
+                <li>
+                    Creación de <strong>interfaz responsiva mediante HTML, CSS, JavaScript y Bootstrap</strong>, garantizando
+                    accesibilidad y usabilidad.
+                </li>
+                <li><strong>Programación</strong> de funciones para generación automatizada de reportes en formato Excel.</li>
+                <li>
+                    <strong>Implementación de filtros y búsquedas dinámicas</strong> por nombre, fecha y categoría para optimizar
+                    la gestión de datos.
+                </li>
+                <li>
+                    <strong>Aplicación de control de versiones con Git</strong> y colaboración en repositorio <strong>GitHub</strong>.
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="timeline-item left">
+        <div class="timeline-content">
+            <p class="timeline-date">Julio 2024 - Enero 2025</p>
+            <h3> Técnico en Soporte y Mantenimiento de Equipos</h3>
+            <p class="timeline-issuer">
+                Tecnológico Nacional de
+                México, Campus Tuxtla Gutiérrez
+            </p>
+            <ul>
+                <li>
+                    <strong>Realización de limpieza y mantenimiento</strong> regular de <strong>equipos de cómputo</strong> para prolongar su vida
+                    útil.
+                </li>
+                <li>
+                    <strong>Ensamblaje y configuración de hardware</strong> para nuevas estaciones de trabajo.
+                </li>
+                <li>
+                    <strong>Instalación y actualización de software</strong>, incluyendo paquetes de productividad como Microsoft
+                    Office.
+                </li>
+                <li>
+                    <strong>Ejecución de cableado estructurado</strong> para la habilitación y mejora de la red en salones de clase.
+                </li>
+                <li>
+                    <strong>Diagnóstico y resolución de problemas técnicos</strong>, asegurando disponibilidad y funcionalidad
+                    óptima de los sistemas.
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="timeline-item right">
+        <div class="timeline-content">
+            <p class="timeline-date">Septiembre 2024 - Diciembre 2024</p>
+            <h3>Desarrollador de Aplicación Móvil</h3>
+            <p class="timeline-issuer">Proyecto Académico en Tecnológico</p>
+            <ul>
+                <li>
+                    <strong>Desarrollo</strong> de funcionalidades de autenticación con registro e inicio de sesión seguros.
+                </li>
+                <li><strong>Implementación</strong> completa de CRUD para gestión de tareas.</li>
+                <li>Integración de un módulo multimedia para reproducción de videos locales y streaming.</li>
+                <li>
+                    <strong>Colaboración</strong> en diseño y optimización de la interfaz gráfica para una experiencia de usuario
+                    amigable.
+                </li>
+                <li>
+                    Realización de <strong>pruebas funcionales</strong> y <strong>corrección de errores</strong> asegurando la estabilidad de la app.
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
