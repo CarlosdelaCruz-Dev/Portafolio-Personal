@@ -40,7 +40,7 @@ namespace PortafolioPersonal.Data
                         Nombre = "Portafolio Personal Web",
                         Descripcion = "Aplicación web personal desarrollada desde cero con C# y ASP.NET Core. Presenta un diseño UI/UX personalizado con animaciones CSS y un backend funcional que incluye un formulario de contacto y sistema de proyectos.",
                         Tecnologia = "C# / ASP.NET Core",
-                        UrlRepositorio = "https://github.com/CarlosdelaCruz-Dev/PortafolioPersonal.git" 
+                        UrlRepositorio = "https://github.com/CarlosdelaCruz-Dev/Portafolio-Personal.git"
                     }
                 );
 
