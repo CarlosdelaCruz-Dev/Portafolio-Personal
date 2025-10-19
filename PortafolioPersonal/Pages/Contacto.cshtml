@@ -46,6 +46,15 @@
         .submit-button:hover {
             background-color: rgba(100, 255, 218, 0.1);
         }
+
+
+    /* --- INICIO: AJUSTE DE POSICIÓN VERTICAL PARA MÓVILES --- */
+    @@media (max-width: 768px) {
+        .contact-wrapper {
+            /* Simplemente añadimos un espacio superior para empujar el formulario hacia abajo */
+            padding-top: 140px; /* Puedes ajustar este valor (ej. 80px) si lo quieres más abajo */
+        }
+    }
 </style>
 
 <div class="contact-wrapper">

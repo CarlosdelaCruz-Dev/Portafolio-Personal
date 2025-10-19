@@ -132,6 +132,82 @@
         .nav-link.active::after {
             content: '';
         }
+
+        /* --- INICIO: ESTILOS PARA LA NOTIFICACIÓN TOAST --- */
+
+        /* Contenedor principal de la notificación */
+        .toast-container {
+            position: fixed; /* Fija la posición relativa a la ventana del navegador */
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--light-navy);
+            color: var(--lightest-slate);
+            border: 1px solid var(--green-neon);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(100, 255, 218, 0.2);
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            z-index: 1000; /* Se asegura de que esté por encima de todo */
+            opacity: 0;
+            transform: translateY(100px);
+            visibility: hidden;
+            transition: opacity 0.5s ease, transform 0.5s ease, visibility 0.5s;
+        }
+
+            /* Clase que se añadirá con JavaScript para mostrar la notificación */
+            .toast-container.show {
+                opacity: 1;
+                transform: translateY(0);
+                visibility: visible;
+            }
+
+        /* Estilo para el icono de checkmark */
+        .toast-icon {
+            color: var(--green-neon);
+            margin-right: 15px;
+        }
+
+        /* La barra de progreso en la parte inferior */
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            width: 100%;
+            background-color: var(--green-neon);
+            animation: progress-shrink 5s linear forwards;
+        }
+
+        /* Animación que hace que la barra de progreso se encoja */
+        @@keyframes progress-shrink {
+            from {
+                width: 100%;
+            }
+
+            to {
+                width: 0%;
+            }
+        }
+
+        /* --- INICIO: ARREGLO DE FOOTER FLOTANTE PARA MÓVILES --- */
+
+        /* Esta regla se aplica SÓLO a pantallas con un ancho máximo de 768px (tablets y móviles) */
+        @@media (max-width: 768px) {
+            body {
+                /* Hacemos que el body ocupe al menos toda la altura de la pantalla y sea un contenedor flex */
+                min-height: 100vh; /* vh = viewport height (altura de la ventana) */
+                display: flex;
+                flex-direction: column;
+            }
+
+            div.container {
+                /* ¡Esta es la clave! Obliga al contenedor principal a estirarse y ocupar todo el espacio libre, empujando el footer hacia abajo. */
+                flex-grow: 1;
+            }
+
+
+        }
     </style>
 </head>
 <body>
@@ -155,10 +231,10 @@
                                 <a class="nav-link" asp-area="" asp-page="/SobreMi">Sobre Mí</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/Contacto">Contacto</a>
+                                <a class="nav-link" asp-area="" asp-page="/CV">CV</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/CV">CV</a>
+                                <a class="nav-link" asp-area="" asp-page="/Contacto">Contacto</a>
                             </li>
                         </ul>
                     </ul>
@@ -170,8 +246,14 @@
         <main role="main" class="pb-3">
             @if (TempData["SuccessMessage"] != null)
             {
-                <div class="alert alert-success" role="alert">
-                    @TempData["SuccessMessage"]
+                <div id="toast-notification" class="toast-container">
+                    <div class="toast-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <div class="toast-message">
+                        @TempData["SuccessMessage"]
+                    </div>
+                    <div class="toast-progress"></div>
                 </div>
             }
             @RenderBody()
@@ -199,6 +281,8 @@
             @* Línea de copyright. @DateTime.Now.Year obtiene el año actual automáticamente con C#. *@
             &copy; @DateTime.Now.Year - Portafolio de Carlos Enrique Hernández de la Cruz - <a asp-area="" asp-page="/Privacy">Política de Privacidad</a>
         </div>
+
+
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -232,6 +316,16 @@
                     link.classList.add('active');
                 }
             });
+        });
+    </script>
+    @* --- SCRIPT PARA MOSTRAR Y OCULTAR EL TOAST --- *@
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const toast = document.getElementById('toast-notification');
+            if (toast) {
+                setTimeout(() => { toast.classList.add('show'); }, 100);
+                setTimeout(() => { toast.classList.remove('show'); }, 5000);
+            }
         });
     </script>
 </body>

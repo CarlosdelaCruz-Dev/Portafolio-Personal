@@ -1,0 +1,32 @@
+﻿# Archivos y carpetas específicos del sistema operativo
+*.swp
+*~
+.DS_Store
+
+# Archivos de configuración específicos del usuario de Visual Studio
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Carpetas generadas por la compilación
+[Bb]in/
+[Oo]bj/
+
+# Archivos generados por el sistema de control de código fuente
+*.orig
+
+# Carpeta de configuraciones de Visual Studio
+.vs/
+
+# Archivos de publicación
+[Rr]elease/
+[Pp]ublish/
+
+# Archivos de base de datos SQLite (para evitar subir la base de datos local)
+*.db
+*.db-shm
+*.db-wal
+
+# Archivos de secretos de usuario (¡muy importante!)
+secrets.json
